@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecno Shop - Quiz de Descuentos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #000051 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #64b5f6, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #64b5f6;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #1565c0, #64b5f6);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 181, 246, 0.4);
+        }
+
+        .discount-display {
+            background: rgba(100, 181, 246, 0.2);
+            border: 2px solid #64b5f6;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .question-container {
+            text-align: left;
+            margin: 30px 0;
+        }
+
+        .question-number {
+            color: #64b5f6;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .option:hover {
+            border-color: #64b5f6;
+            background: rgba(100, 181, 246, 0.2);
+        }
+
+        .option.selected {
+            border-color: #64b5f6;
+            background: rgba(100, 181, 246, 0.3);
+        }
+
+        .option.correct {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .option.incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #64b5f6, #1565c0);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .result-card {
+            background: rgba(100, 181, 246, 0.1);
+            border: 2px solid #64b5f6;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .code-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            margin: 15px 0;
+            border: 1px solid #64b5f6;
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #64b5f6;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #64b5f6;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            font-size: 1.1rem;
+        }
+
+        .calculation-result {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .option {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .feedback {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .feedback.correct {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            color: #4caf50;
+        }
+
+        .feedback.incorrect {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de Bienvenida -->
+        <div id="welcome-screen" class="screen active">
+            <h1>TECNO SHOP</h1>
+            <p class="subtitle">¡Gana descuentos jugando nuestro quiz de tecnología!</p>
+            <div class="discount-display">
+                Descuento actual: <span id="current-discount">0%</span>
+            </div>
+            <p style="margin: 20px 0; font-size: 1.1rem;">
+                Responde correctamente las preguntas y obtén hasta un <strong>60% de descuento</strong> 
+                en tu próxima compra. ¡Cada respuesta correcta suma puntos!
+            </p>
+            <button class="btn" onclick="startGame()">Comenzar Juego</button>
+        </div>
+
+        <!-- Pantalla del Quiz -->
+        <div id="quiz-screen" class="screen">
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <div class="discount-display">
+                Descuento actual: <span id="game-discount">0%</span>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-number" id="question-number"></div>
+                <div class="question-text" id="question-text"></div>
+                <div class="options" id="options"></div>
+            </div>
+            
+            <div id="feedback" class="feedback" style="display: none;"></div>
+            <button id="next-btn" class="btn" onclick="nextQuestion()" style="display: none;">Siguiente Pregunta</button>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="results-screen" class="screen">
+            <h1>¡Juego Completado!</h1>
+            
+            <div class="result-card">
+                <h2>Tu Descuento Final</h2>
+                <div class="discount-display">
+                    <span id="final-discount">0%</span>
+                </div>
+                <p>Respuestas correctas: <span id="correct-answers">0</span> / <span id="total-questions">12</span></p>
+            </div>
+
+            <div class="result-card">
+                <h3>Tu Código de Canje</h3>
+                <div class="code-display" id="discount-code"></div>
+                <p style="margin-top: 10px; color: #64b5f6;">
+                    Presenta este código en Tecno Shop para obtener tu descuento
+                </p>
+            </div>
+
+            <div class="calculator">
+                <h3>Calculadora de Descuento</h3>
+                <div class="input-group">
+                    <label for="product-price">Precio del producto ($):</label>
+                    <input type="number" id="product-price" placeholder="Ej: 100000" min="0" step="1000">
+                </div>
+                <button class="btn" onclick="calculateDiscount()">Calcular Precio Final</button>
+                
+                <div id="price-result" style="display: none;" class="calculation-result">
+                    <div><strong>Precio original:</strong> $<span id="original-price">0</span></div>
+                    <div><strong>Descuento aplicado:</strong> <span id="applied-discount">0%</span></div>
+                    <div style="font-size: 1.3rem; margin-top: 10px;">
+                        <strong>Precio final:</strong> $<span id="final-price">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <button class="btn" onclick="restartGame()">Volver a Jugar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Preguntas del quiz (12 preguntas con dificultad creciente)
+        const questions = [
+            // Preguntas fáciles (1-4)
+            {
+                question: "¿Cuál es el sistema operativo más usado en computadoras personales?",
+                options: ["A) Linux", "B) Windows", "C) macOS", "D) Android"],
+                correct: 1
+            },
+            {
+                question: "¿Qué significa 'USB' en tecnología?",
+                options: ["A) Universal Serial Bus", "B) United System Block", "C) Universal System Base", "D) United Serial Block"],
+                correct: 0
+            },
+            {
+                question: "¿Cuál es la unidad básica de almacenamiento de datos?",
+                options: ["A) Megabyte", "B) Gigabyte", "C) Byte", "D) Terabyte"],
+                correct: 2
+            },
+            {
+                question: "¿Qué empresa desarrolló el iPhone?",
+                options: ["A) Samsung", "B) Google", "C) Microsoft", "D) Apple"],
+                correct: 3
+            },
+            // Preguntas medias (5-8)
+            {
+                question: "¿Cuál es la velocidad de internet más común en fibra óptica residencial?",
+                options: ["A) 10 Mbps", "B) 100 Mbps", "C) 1 Gbps", "D) 10 Gbps"],
+                correct: 1
+            },
+            {
+                question: "¿Qué tecnología permite la conexión inalámbrica de corto alcance entre dispositivos?",
+                options: ["A) Wi-Fi", "B) Bluetooth", "C) 4G", "D) Ethernet"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es la resolución de pantalla 4K?",
+                options: ["A) 1920x1080", "B) 2560x1440", "C) 3840x2160", "D) 7680x4320"],
+                correct: 2
+            },
+            {
+                question: "¿Qué significa 'RAM' en computadoras?",
+                options: ["A) Random Access Memory", "B) Rapid Action Module", "C) Real Audio Memory", "D) Remote Access Machine"],
+                correct: 0
+            },
+            // Preguntas difíciles (9-12)
+            {
+                question: "¿Cuál es el protocolo de seguridad más avanzado para redes Wi-Fi actualmente?",
+                options: ["A) WEP", "B) WPA", "C) WPA2", "D) WPA3"],
+                correct: 3
+            },
+            {
+                question: "¿Qué arquitectura de procesador usa Apple en sus nuevos Mac?",
+                options: ["A) x86", "B) ARM", "C) RISC-V", "D) PowerPC"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es la tecnología de pantalla más eficiente energéticamente?",
+                options: ["A) LCD", "B) LED", "C) OLED", "D) E-Ink"],
+                correct: 3
+            },
+            {
+                question: "¿Qué estándar de carga rápida es más universal actualmente?",
+                options: ["A) Lightning", "B) USB-C PD", "C) Wireless Qi", "D) MagSafe"],
+                correct: 1
+            }
+        ];
+
+        // Variables del juego
+        let currentQuestion = 0;
+        let discount = 0;
+        let correctAnswers = 0;
+        let selectedAnswer = null;
+
+        // Funciones principales
+        function startGame() {
+            document.getElementById('welcome-screen').classList.remove('active');
+            document.getElementById('quiz-screen').classList.add('active');
+            currentQuestion = 0;
+            discount = 0;
+            correctAnswers = 0;
+            selectedAnswer = null;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question-number').textContent = `Pregunta ${currentQuestion + 1} de ${questions.length}`;
+            document.getElementById('question-text').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectAnswer(index, optionDiv);
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            // Actualizar barra de progreso
+            const progress = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            
+            // Ocultar feedback y botón siguiente
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            
+            selectedAnswer = null;
+        }
+
+        function selectAnswer(answerIndex, optionElement) {
+            if (selectedAnswer !== null) return; // Ya respondió
+            
+            selectedAnswer = answerIndex;
+            const question = questions[currentQuestion];
+            const isCorrect = answerIndex === question.correct;
+            
+            // Marcar la opción seleccionada
+            optionElement.classList.add('selected');
+            
+            // Mostrar respuestas correctas e incorrectas
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === answerIndex && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none'; // Deshabilitar clics
+            });
+            
+            // Actualizar puntuación
+            if (isCorrect) {
+                correctAnswers++;
+                discount += 5; // +5% por respuesta correcta
+                if (discount > 60) discount = 60; // Máximo 60%
+                showFeedback(true, "¡Correcto! Has ganado 5% de descuento.");
+            } else {
+                discount -= 3; // -3% por respuesta incorrecta
+                if (discount < 0) discount = 0; // Mínimo 0%
+                showFeedback(false, "Respuesta incorrecta. Has perdido 3% de descuento.");
+            }
+            
+            // Actualizar display de descuento
+            document.getElementById('game-discount').textContent = discount + '%';
+            
+            // Mostrar botón siguiente
+            setTimeout(() => {
+                document.getElementById('next-btn').style.display = 'inline-block';
+            }, 1500);
+        }
+
+        function showFeedback(isCorrect, message) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            document.getElementById('quiz-screen').classList.remove('active');
+            document.getElementById('results-screen').classList.add('active');
+            
+            // Mostrar resultados
+            document.getElementById('final-discount').textContent = discount + '%';
+            document.getElementById('correct-answers').textContent = correctAnswers;
+            document.getElementById('total-questions').textContent = questions.length;
+            
+            // Generar código de canje
+            const code = generateDiscountCode();
+            document.getElementById('discount-code').textContent = code;
+        }
+
+        function generateDiscountCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = 'TECNO-';
+            
+            for (let i = 0; i < 8; i++) {
+                if (i === 4) code += '-'; // Agregar guión en el medio para mejor legibilidad
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            return code;
+        }
+
+        function calculateDiscount() {
+            const priceInput = document.getElementById('product-price');
+            const originalPrice = parseFloat(priceInput.value);
+            
+            if (isNaN(originalPrice) || originalPrice <= 0) {
+                alert('Por favor ingresa un precio válido');
+                return;
+            }
+            
+            const discountAmount = (originalPrice * discount) / 100;
+            const finalPrice = originalPrice - discountAmount;
+            
+            // Mostrar resultados
+            document.getElementById('original-price').textContent = originalPrice.toLocaleString('es-CO');
+            document.getElementById('applied-discount').textContent = discount + '%';
+            document.getElementById('final-price').textContent = finalPrice.toLocaleString('es-CO');
+            
+            document.getElementById('price-result').style.display = 'block';
+        }
+
+        function restartGame() {
+            document.getElementById('results-screen').classList.remove('active');
+            document.getElementById('welcome-screen').classList.add('active');
+            
+            // Resetear valores
+            currentQuestion = 0;
+            discount = 0;
+            correctAnswers = 0;
+            selectedAnswer = null;
+            
+            // Resetear displays
+            document.getElementById('current-discount').textContent = '0%';
+            document.getElementById('game-discount').textContent = '0%';
+            document.getElementById('product-price').value = '';
+            document.getElementById('price-result').style.display = 'none';
+        }
+
+        // Inicializar el juego
+        document.addEventListener('DOMContentLoaded', function() {
+            // El juego ya está inicializado mostrando la pantalla de bienvenida
+        });
+    </script>
+</body>
+</html>
