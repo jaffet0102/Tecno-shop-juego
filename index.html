@@ -342,72 +342,138 @@
     </div>
 
     <script>
-        // Preguntas del quiz (12 preguntas con dificultad creciente)
-        const questions = [
-            // Preguntas fáciles (1-4)
-            {
-                question: "¿Cuál es el sistema operativo más usado en computadoras personales?",
-                options: ["A) Linux", "B) Windows", "C) macOS", "D) Android"],
-                correct: 1
-            },
-            {
-                question: "¿Qué significa 'USB' en tecnología?",
-                options: ["A) Universal Serial Bus", "B) United System Block", "C) Universal System Base", "D) United Serial Block"],
-                correct: 0
-            },
-            {
-                question: "¿Cuál es la unidad básica de almacenamiento de datos?",
-                options: ["A) Megabyte", "B) Gigabyte", "C) Byte", "D) Terabyte"],
-                correct: 2
-            },
-            {
-                question: "¿Qué empresa desarrolló el iPhone?",
-                options: ["A) Samsung", "B) Google", "C) Microsoft", "D) Apple"],
-                correct: 3
-            },
-            // Preguntas medias (5-8)
-            {
-                question: "¿Cuál es la velocidad de internet más común en fibra óptica residencial?",
-                options: ["A) 10 Mbps", "B) 100 Mbps", "C) 1 Gbps", "D) 10 Gbps"],
-                correct: 1
-            },
-            {
-                question: "¿Qué tecnología permite la conexión inalámbrica de corto alcance entre dispositivos?",
-                options: ["A) Wi-Fi", "B) Bluetooth", "C) 4G", "D) Ethernet"],
-                correct: 1
-            },
-            {
-                question: "¿Cuál es la resolución de pantalla 4K?",
-                options: ["A) 1920x1080", "B) 2560x1440", "C) 3840x2160", "D) 7680x4320"],
-                correct: 2
-            },
-            {
-                question: "¿Qué significa 'RAM' en computadoras?",
-                options: ["A) Random Access Memory", "B) Rapid Action Module", "C) Real Audio Memory", "D) Remote Access Machine"],
-                correct: 0
-            },
-            // Preguntas difíciles (9-12)
-            {
-                question: "¿Cuál es el protocolo de seguridad más avanzado para redes Wi-Fi actualmente?",
-                options: ["A) WEP", "B) WPA", "C) WPA2", "D) WPA3"],
-                correct: 3
-            },
-            {
-                question: "¿Qué arquitectura de procesador usa Apple en sus nuevos Mac?",
-                options: ["A) x86", "B) ARM", "C) RISC-V", "D) PowerPC"],
-                correct: 1
-            },
-            {
-                question: "¿Cuál es la tecnología de pantalla más eficiente energéticamente?",
-                options: ["A) LCD", "B) LED", "C) OLED", "D) E-Ink"],
-                correct: 3
-            },
-            {
-                question: "¿Qué estándar de carga rápida es más universal actualmente?",
-                options: ["A) Lightning", "B) USB-C PD", "C) Wireless Qi", "D) MagSafe"],
-                correct: 1
-            }
-        ];
+        // Banco de preguntas organizadas por dificultad
+        const questionBank = {
+            easy: [
+                {
+                    question: "¿Cuál es el sistema operativo más usado en computadoras personales?",
+                    options: ["A) Linux", "B) Windows", "C) macOS", "D) Android"],
+                    correct: 1
+                },
+                {
+                    question: "¿Qué significa 'USB' en tecnología?",
+                    options: ["A) Universal Serial Bus", "B) United System Block", "C) Universal System Base", "D) United Serial Block"],
+                    correct: 0
+                },
+                {
+                    question: "¿Cuál es la unidad básica de almacenamiento de datos?",
+                    options: ["A) Megabyte", "B) Gigabyte", "C) Byte", "D) Terabyte"],
+                    correct: 2
+                },
+                {
+                    question: "¿Qué empresa desarrolló el iPhone?",
+                    options: ["A) Samsung", "B) Google", "C) Microsoft", "D) Apple"],
+                    correct: 3
+                },
+                {
+                    question: "¿Cómo se llama el ratón inalámbrico más común?",
+                    options: ["A) Mouse USB", "B) Mouse Bluetooth", "C) Mouse Wi-Fi", "D) Mouse Infrarrojo"],
+                    correct: 1
+                },
+                {
+                    question: "¿Qué significa 'HD' en calidad de video?",
+                    options: ["A) High Definition", "B) Hard Drive", "C) Home Digital", "D) Heavy Data"],
+                    correct: 0
+                },
+                {
+                    question: "¿Cuál es el navegador web más usado mundialmente?",
+                    options: ["A) Firefox", "B) Safari", "C) Chrome", "D) Edge"],
+                    correct: 2
+                },
+                {
+                    question: "¿Qué empresa creó Android?",
+                    options: ["A) Apple", "B) Microsoft", "C) Samsung", "D) Google"],
+                    correct: 3
+                }
+            ],
+            medium: [
+                {
+                    question: "¿Cuál es la velocidad de internet más común en fibra óptica residencial?",
+                    options: ["A) 10 Mbps", "B) 100 Mbps", "C) 1 Gbps", "D) 10 Gbps"],
+                    correct: 1
+                },
+                {
+                    question: "¿Qué tecnología permite la conexión inalámbrica de corto alcance entre dispositivos?",
+                    options: ["A) Wi-Fi", "B) Bluetooth", "C) 4G", "D) Ethernet"],
+                    correct: 1
+                },
+                {
+                    question: "¿Cuál es la resolución de pantalla 4K?",
+                    options: ["A) 1920x1080", "B) 2560x1440", "C) 3840x2160", "D) 7680x4320"],
+                    correct: 2
+                },
+                {
+                    question: "¿Qué significa 'RAM' en computadoras?",
+                    options: ["A) Random Access Memory", "B) Rapid Action Module", "C) Real Audio Memory", "D) Remote Access Machine"],
+                    correct: 0
+                },
+                {
+                    question: "¿Cuál es el formato de video más eficiente actualmente?",
+                    options: ["A) MP4", "B) AVI", "C) H.265", "D) MOV"],
+                    correct: 2
+                },
+                {
+                    question: "¿Qué significa 'SSD' en almacenamiento?",
+                    options: ["A) Super Speed Drive", "B) Solid State Drive", "C) System Storage Device", "D) Secure Save Disk"],
+                    correct: 1
+                },
+                {
+                    question: "¿Cuál es la diferencia principal entre 5G y 4G?",
+                    options: ["A) Solo el nombre", "B) Velocidad de conexión", "C) Color de la señal", "D) Tamaño del teléfono"],
+                    correct: 1
+                },
+                {
+                    question: "¿Qué es un 'firewall' en computación?",
+                    options: ["A) Un muro de fuego real", "B) Sistema de seguridad", "C) Tipo de monitor", "D) Cable de red"],
+                    correct: 1
+                }
+            ],
+            hard: [
+                {
+                    question: "¿Cuál es el protocolo de seguridad más avanzado para redes Wi-Fi actualmente?",
+                    options: ["A) WEP", "B) WPA", "C) WPA2", "D) WPA3"],
+                    correct: 3
+                },
+                {
+                    question: "¿Qué arquitectura de procesador usa Apple en sus nuevos Mac?",
+                    options: ["A) x86", "B) ARM", "C) RISC-V", "D) PowerPC"],
+                    correct: 1
+                },
+                {
+                    question: "¿Cuál es la tecnología de pantalla más eficiente energéticamente?",
+                    options: ["A) LCD", "B) LED", "C) OLED", "D) E-Ink"],
+                    correct: 3
+                },
+                {
+                    question: "¿Qué estándar de carga rápida es más universal actualmente?",
+                    options: ["A) Lightning", "B) USB-C PD", "C) Wireless Qi", "D) MagSafe"],
+                    correct: 1
+                },
+                {
+                    question: "¿Cuál es el proceso de fabricación más avanzado de chips actualmente?",
+                    options: ["A) 14nm", "B) 7nm", "C) 3nm", "D) 1nm"],
+                    correct: 2
+                },
+                {
+                    question: "¿Qué significa 'DDR5' en memoria RAM?",
+                    options: ["A) Double Data Rate 5", "B) Digital Data Read 5", "C) Direct Drive RAM 5", "D) Dynamic Data Rate 5"],
+                    correct: 0
+                },
+                {
+                    question: "¿Cuál es la tecnología de refrigeración más avanzada para CPUs?",
+                    options: ["A) Aire", "B) Refrigeración líquida", "C) Nitrógeno líquido", "D) Helio"],
+                    correct: 1
+                },
+                {
+                    question: "¿Qué protocolo usa la mayoría de criptomonedas para validar transacciones?",
+                    options: ["A) Proof of Work", "B) Proof of Stake", "C) Proof of Authority", "D) Proof of Capacity"],
+                    correct: 0
+                }
+            ]
+        };
+
+        // Variables para las preguntas seleccionadas
+        let questions = [];
 
         // Variables del juego
         let currentQuestion = 0;
@@ -415,8 +481,45 @@
         let correctAnswers = 0;
         let selectedAnswer = null;
 
+        // Función para seleccionar preguntas aleatorias
+        function generateRandomQuestions() {
+            questions = [];
+            
+            // Seleccionar 4 preguntas fáciles aleatoriamente
+            const easyQuestions = shuffleArray([...questionBank.easy]).slice(0, 4);
+            questions.push(...easyQuestions);
+            
+            // Seleccionar 4 preguntas medias aleatoriamente  
+            const mediumQuestions = shuffleArray([...questionBank.medium]).slice(0, 4);
+            questions.push(...mediumQuestions);
+            
+            // Seleccionar 4 preguntas difíciles aleatoriamente
+            const hardQuestions = shuffleArray([...questionBank.hard]).slice(0, 4);
+            questions.push(...hardQuestions);
+            
+            // Mezclar ligeramente las opciones dentro de cada pregunta para más variedad
+            questions.forEach(question => {
+                const correctAnswer = question.options[question.correct];
+                question.options = shuffleArray([...question.options]);
+                question.correct = question.options.indexOf(correctAnswer);
+            });
+        }
+
+        // Función para mezclar un array (algoritmo Fisher-Yates)
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
         // Funciones principales
         function startGame() {
+            // Generar preguntas aleatorias antes de empezar
+            generateRandomQuestions();
+            
             document.getElementById('welcome-screen').classList.remove('active');
             document.getElementById('quiz-screen').classList.add('active');
             currentQuestion = 0;
